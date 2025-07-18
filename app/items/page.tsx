@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Search, Filter, Calendar, User, ArrowLeft } from "lucide-react"
+import { Search as SearchIcon, Filter as FilterIcon, Calendar as CalendarIcon, User as UserIcon, ArrowLeft as ArrowLeftIcon } from "lucide-react"
 
 // Mock data - in a real app, this would come from your backend/database
 const mockItems = [
@@ -96,9 +96,9 @@ export default function ItemsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Search className="w-5 h-5 text-white" />
-              </div>
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <SearchIcon className="w-5 h-5 text-white" />
+                </div>
               <h1 className="text-xl font-bold text-gray-900">Campus Lost & Found</h1>
             </div>
             <nav className="hidden md:flex space-x-6">
@@ -120,7 +120,7 @@ export default function ItemsPage() {
         <div className="max-w-6xl mx-auto">
           {/* Back Button */}
           <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeftIcon className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
 
@@ -136,7 +136,7 @@ export default function ItemsPage() {
               <div className="flex flex-col md:flex-row gap-4">
                 {/* Search Bar */}
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <Input
                     type="text"
                     placeholder="Search by item name or description..."
@@ -153,7 +153,7 @@ export default function ItemsPage() {
                     onClick={() => setFilterType("All")}
                     className={filterType === "All" ? "bg-blue-600 hover:bg-blue-700" : ""}
                   >
-                    <Filter className="w-4 h-4 mr-2" />
+                  <FilterIcon className="w-4 h-4 mr-2" />
                     All ({mockItems.length})
                   </Button>
                   <Button
@@ -198,11 +198,11 @@ export default function ItemsPage() {
                   </div>
                   <div className="flex items-center text-sm text-gray-500 space-x-4">
                     <div className="flex items-center">
-                      <User className="w-4 h-4 mr-1" />
+                    <UserIcon className="w-4 h-4 mr-1" />
                       {item.reporterName}
                     </div>
                     <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1" />
+                      <CalendarIcon className="w-4 h-4 mr-1" />
                       {formatDate(item.createdAt)}
                     </div>
                   </div>
@@ -218,7 +218,7 @@ export default function ItemsPage() {
           {filteredItems.length === 0 && (
             <Card className="text-center py-12 border-0 shadow-lg">
               <CardContent>
-                <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <SearchIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No items found</h3>
                 <p className="text-gray-600 mb-6">
                   Try adjusting your search terms or filters to find what you're looking for.

@@ -5,52 +5,38 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, ArrowLeft, CheckCircle } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { ArrowLeft, Search, CheckCircle } from "lucide-react"
 
 export default function ReportPage() {
-  const router = useRouter()
   const [formData, setFormData] = useState({
-    reporter_name: "",
+    reporterName: "",
     type: "",
-    item_name: "",
+    itemName: "",
     description: "",
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
+    // Here you would typically send the data to your backend
+    console.log("Form submitted:", formData)
+    setIsSubmitted(true)
 
-    try {
-      const response = await fetch("/api/report-item", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+    // Reset form after 3 seconds
+    setTimeout(() => {
+      setIsSubmitted(false)
+      setFormData({
+        reporterName: "",
+        type: "",
+        itemName: "",
+        description: "",
       })
-
-      if (response.ok) {
-        setIsSubmitted(true)
-        setFormData({
-          reporter_name: "",
-          type: "",
-          item_name: "",
-          description: "",
-        })
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error)
-    } finally {
-      setIsSubmitting(false)
-    }
+    }, 3000)
   }
 
   const handleInputChange = (field: string, value: string) => {
@@ -62,155 +48,158 @@ export default function ReportPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-4">
-              <div className="flex items-center space-x-2">
-                <MapPin className="h-8 w-8 text-blue-600" />
-                <h1 className="text-2xl font-bold text-gray-900">Campus Lost & Found</h1>
-              </div>
-              <nav className="flex space-x-4">
-                <Link href="/">
-                  <Button variant="ghost">Home</Button>
-                </Link>
-                <Link href="/report">
-                  <Button variant="ghost">Report Item</Button>
-                </Link>
-                <Link href="/view">
-                  <Button variant="ghost">View Items</Button>
-                </Link>
-              </nav>
-            </div>
-          </div>
-        </header>
-
-        <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <Card className="text-center">
-            <CardHeader>
-              <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
-              <CardTitle className="text-2xl text-green-600">Item Reported Successfully!</CardTitle>
-              <CardDescription>
-                Your item has been added to our database. Other users can now see it and contact you if needed.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button onClick={() => setIsSubmitted(false)}>Report Another Item</Button>
-                <Link href="/view">
-                  <Button variant="outline">View All Items</Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </main>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-50 flex items-center justify-center px-4">
+        <Card className="w-full max-w-md text-center">
+          <CardContent className="pt-8 pb-6">
+            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Report Submitted!</h2>
+            <p className="text-gray-600 mb-6">
+              Thank you for helping make our campus community better. Your report has been added to our database.
+            </p>
+            <Link href="/items">
+              <Button className="bg-blue-600 hover:bg-blue-700">View All Reports</Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
-              <MapPin className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">Campus Lost & Found</h1>
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Search className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-xl font-bold text-gray-900">Campus Lost & Found</h1>
             </div>
-            <nav className="flex space-x-4">
-              <Link href="/">
-                <Button variant="ghost">Home</Button>
+            <nav className="hidden md:flex space-x-6">
+              <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium">
+                Home
               </Link>
-              <Link href="/report">
-                <Button variant="ghost">Report Item</Button>
+              <Link href="/report" className="text-blue-600 font-medium">
+                Report Item
               </Link>
-              <Link href="/view">
-                <Button variant="ghost">View Items</Button>
+              <Link href="/items" className="text-gray-700 hover:text-blue-600 font-medium">
+                View Reports
               </Link>
             </nav>
           </div>
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-6">
-          <Link href="/">
-            <Button variant="ghost" className="mb-4">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Button>
+      <div className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          {/* Back Button */}
+          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Home
           </Link>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Report an Item</h2>
-          <p className="text-gray-600">Fill out the form below to report a lost or found item.</p>
+
+          <Card className="shadow-lg border-0">
+            <CardHeader className="bg-blue-600 text-white rounded-t-lg">
+              <CardTitle className="text-2xl">Report an Item</CardTitle>
+              <p className="text-blue-100">
+                Help us reunite lost items with their owners by providing detailed information.
+              </p>
+            </CardHeader>
+            <CardContent className="p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Reporter Name */}
+                <div>
+                  <Label htmlFor="reporterName" className="text-sm font-medium text-gray-700">
+                    Your Name *
+                  </Label>
+                  <Input
+                    id="reporterName"
+                    type="text"
+                    required
+                    value={formData.reporterName}
+                    onChange={(e) => handleInputChange("reporterName", e.target.value)}
+                    placeholder="Enter your full name"
+                    className="mt-1"
+                  />
+                </div>
+
+                {/* Type Selection */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-3 block">Report Type *</Label>
+                  <RadioGroup
+                    value={formData.type}
+                    onValueChange={(value) => handleInputChange("type", value)}
+                    className="flex space-x-6"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Lost" id="lost" />
+                      <Label htmlFor="lost" className="text-gray-700">
+                        I lost something
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Found" id="found" />
+                      <Label htmlFor="found" className="text-gray-700">
+                        I found something
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {/* Item Name */}
+                <div>
+                  <Label htmlFor="itemName" className="text-sm font-medium text-gray-700">
+                    Item Name *
+                  </Label>
+                  <Input
+                    id="itemName"
+                    type="text"
+                    required
+                    value={formData.itemName}
+                    onChange={(e) => handleInputChange("itemName", e.target.value)}
+                    placeholder="e.g., iPhone 13, Blue Backpack, Textbook"
+                    className="mt-1"
+                  />
+                </div>
+
+                {/* Description */}
+                <div>
+                  <Label htmlFor="description" className="text-sm font-medium text-gray-700">
+                    Description *
+                  </Label>
+                  <Textarea
+                    id="description"
+                    required
+                    value={formData.description}
+                    onChange={(e) => handleInputChange("description", e.target.value)}
+                    placeholder="Provide detailed information: color, brand, size, where it was lost/found, any distinguishing features..."
+                    rows={4}
+                    className="mt-1"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg"
+                  disabled={!formData.reporterName || !formData.type || !formData.itemName || !formData.description}
+                >
+                  Submit Report
+                </Button>
+              </form>
+
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Tip:</strong> The more details you provide, the easier it will be to match lost and found
+                  items. Include information like color, brand, size, and where the item was lost or found.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Item Details</CardTitle>
-            <CardDescription>
-              Please provide as much detail as possible to help others identify the item.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="reporter_name">Your Name *</Label>
-                <Input
-                  id="reporter_name"
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={formData.reporter_name}
-                  onChange={(e) => handleInputChange("reporter_name", e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="type">Report Type *</Label>
-                <Select value={formData.type} onValueChange={(value) => handleInputChange("type", value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select report type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Lost">Lost Item</SelectItem>
-                    <SelectItem value="Found">Found Item</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="item_name">Item Name *</Label>
-                <Input
-                  id="item_name"
-                  type="text"
-                  placeholder="e.g., iPhone 13, Blue Backpack, Keys"
-                  value={formData.item_name}
-                  onChange={(e) => handleInputChange("item_name", e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description">Description *</Label>
-                <Textarea
-                  id="description"
-                  placeholder="Provide detailed description including color, brand, size, location where lost/found, etc."
-                  value={formData.description}
-                  onChange={(e) => handleInputChange("description", e.target.value)}
-                  rows={4}
-                  required
-                />
-              </div>
-
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Submit Report"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </main>
+      </div>
     </div>
   )
 }

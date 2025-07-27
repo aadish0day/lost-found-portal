@@ -31,6 +31,7 @@ next-env.d.ts
 *.db
 *.sqlite
 *.sqlite3
+prisma/dev.db
 
 # Logs
 logs
@@ -109,3 +110,5 @@ temp/
 
 # Prisma
 prisma/migrations/
+
+/lib/generated/prisma

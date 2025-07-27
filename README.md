@@ -27,26 +27,32 @@ A modern web application for reporting and managing lost and found items on camp
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/aadish0day/lost-found-portal.git
 cd lost-found-portal
 ```
 
 2. Install dependencies:
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
+
 
 3. Set up the database:
 ```bash
 # Generate Prisma client
 npx prisma generate
+```
 
+```bash
 # Push the schema to the database
 npx prisma db push
+```
 
+```bash
 # Seed the database with sample data
 npm run db:seed
 ```
+
 
 4. Start the development server:
 ```bash

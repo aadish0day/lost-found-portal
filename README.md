@@ -4,23 +4,23 @@ A modern web application for reporting and managing lost and found items on camp
 
 ## Features
 
-- **Report Items**: Submit lost or found item reports with detailed information
-- **Browse Reports**: View all reported items with search and filter functionality
-- **Database Storage**: Persistent storage using SQLite database with Prisma ORM
-- **Modern UI**: Beautiful, responsive interface with dark mode support
+- Report lost or found items with detailed information
+- Browse and search through all reported items
+- Responsive design that works on all devices
+- Dark mode support
+- SQLite database with Prisma ORM
 
 ## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
-- **UI Components**: Radix UI, Tailwind CSS
 - **Database**: SQLite with Prisma ORM
-- **Styling**: Tailwind CSS with custom components
+- **Styling**: Tailwind CSS, Radix UI
+- **API**: Next.js API Routes
 
 ## Getting Started
 
 ### Prerequisites
-
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
 ### Installation
@@ -36,23 +36,15 @@ cd lost-found-portal
 npm install --legacy-peer-deps
 ```
 
-
 3. Set up the database:
 ```bash
 # Generate Prisma client
 npx prisma generate
-```
-
-```bash
 # Push the schema to the database
 npx prisma db push
-```
-
-```bash
 # Seed the database with sample data
 npm run db:seed
 ```
-
 
 4. Start the development server:
 ```bash
@@ -63,61 +55,55 @@ npm run dev
 
 ## Database Schema
 
-The application uses a simple `Report` model with the following fields:
-
-- `id`: Unique identifier (CUID)
-- `reporterName`: Name of the person reporting
-- `type`: Either "Lost" or "Found"
-- `itemName`: Name/description of the item
-- `description`: Detailed description of the item
-- `createdAt`: Timestamp when the report was created
-- `updatedAt`: Timestamp when the report was last updated
+```prisma
+model Report {
+  id           String   @id @default(cuid())
+  reporterName String
+  type         String   // "Lost" or "Found"
+  itemName     String
+  description  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+```
 
 ## API Endpoints
 
 - `GET /api/reports` - Fetch all reports
 - `POST /api/reports` - Create a new report
 
-## Development
-
-### Database Commands
+## Development Commands
 
 ```bash
-# View database in Prisma Studio
+# Development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Database management
 npx prisma studio
-
-# Reset database
-npx prisma db push --force-reset
-
-# Seed database
+npx prisma db push
 npm run db:seed
 ```
 
-### Adding New Features
-
-1. Update the Prisma schema in `prisma/schema.prisma`
-2. Run `npx prisma generate` to update the client
-3. Run `npx prisma db push` to apply changes
-4. Update API routes and components as needed
-
 ## Production Deployment
 
-For production, consider:
+For production deployment:
 
-1. **Database**: Switch to PostgreSQL or MySQL
-2. **Environment Variables**: Set up proper environment configuration
-3. **Security**: Add authentication and authorization
-4. **File Uploads**: Add image upload functionality for items
-5. **Notifications**: Add email/SMS notifications for matches
+1. Switch to PostgreSQL or MySQL
+2. Set up proper environment variables
+3. Configure authentication
+4. Add image upload functionality
+5. Set up email notifications
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+4. Submit a pull request
 
 ## License
 
-This project is built for academic purposes. 
+MIT License - see [LICENSE](LICENSE) file for details.

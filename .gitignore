@@ -109,6 +109,7 @@ tmp/
 temp/
 
 # Prisma
-prisma/migrations/
+# Keep migrations for deployment
+# prisma/migrations/  # Uncomment this line to ignore migrations if needed
 
 /lib/generated/prisma
